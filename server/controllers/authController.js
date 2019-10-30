@@ -26,11 +26,11 @@ login = async (req, res) => {
     const foundUser = await req.app.get('db').get_user([username]);
     const user = foundUser[0];
     if (!user) {
-        return res.status(401).json("User not found. Please register as a new user before logging in.");
+        return res.status(401).json("User not found");
     }
     const isAuthenticated = bcrypt.compareSync(password, user.hash);
     if (!isAuthenticated) {
-        return res.status(403).json("Incorrect Username or Password")
+        return res.status(403).json("Incorrect username or password")
     }
     req.session.user = { isAdmin: user.is_admin, id: user.id, username: user.username};
     return res.json(req.session.user);
